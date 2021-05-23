@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>别踩白块-陈泳先</title>
+    <style>
+        .gamezone {
+            width: 400px;
+            height: 520px;
+            border: 1px solid #222;
+            margin: 60px auto;
+            position: relative;
+            overflow: hidden;
+        }
+        .box {
+            width: 100%;
+            height: 520px;
+            position: relative;
+            top: -130px;
+        }
+        #play1{
+            position: absolute;
+            width: 200px;
+            height: 100px;
+            right: 100px;
+            top: 55px;
+            border: 1px dashed #ccc;
+            text-align: center;
+            border-radius: 8px;
+            background-color: #cc5500;
+        }
+        #play2{
+            position: absolute;
+            width: 200px;
+            height: 100px;
+            right: 100px;
+            top: 210px;
+            border: 1px dashed #ccc;
+            text-align: center;
+            border-radius: 8px;
+            background-color: #cc5500;
+        }
+        #play1 a{
+            line-height: 100px;
+            font-size: 30px;
+        }
+ #play2 a{
+            line-height: 100px;
+            font-size: 30px;
+        }
+#rule{
+            position: absolute;
+            width: 200px;
+            height: 100px;
+            right: 100px;
+            top: 365px;
+            border: 1px dashed #ccc;
+            text-align: center;
+            border-radius: 8px;
+            background-color: #cc5500;
+}
+#rule a{
+            line-height: 100px;
+            font-size: 30px;
+}
+#return{
+            position: absolute;
+            width: 200px;
+            height: 100px;
+            right: 100px;
+            top: 210px;
+            border: 1px dashed #ccc;
+            text-align: center;
+            border-radius: 8px;
+            background-color: #cc5500;
+}
+#return a{
+            line-height: 100px;
+            font-size: 30px;
+}
+#rule a{
+            line-height: 100px;
+            font-size: 30px;
+}
+        .rdiv{
+            width: 400px;
+            height: 130px;
+        }
+        .odiv{
+            width:99px;
+            height:129px;
+             border-left:1px solid #222;
+            border-bottom:1px solid #222;
+            float: left;
+            cursor: pointer;
+        }
+        #JiShiQi{
+        width: 200px;
+        height:150px;
+        line-height: 150px;
+        font-size: 60px;
+        font-weight:bold;
+        text-align:center;
+        background-color:#ccc;
+        margin:  20px auto;
+        }
+#rule1{
+            width: 50%;
+            margin: 10px auto;
+            border: 1px dashed #000;
+}
+    </style>
+</head>
+<body>
+    <div class="gamezone" id="_gamezone">
+        <div class="box" id="_box" ></div> 
+    </div>
+    <div id="play1">
+        <a href = "#">经典模式</a>
+ </div> 
+<div id="play2">
+        <a href = "#">街机模式</a>
+</div>
+<div id="rule">
+        <a href = "#">查看规则</a>
+ </div> 
+ <div id="return" style="display:none">
+    <a href = "#">返回</a>
+</div> 
+     <div id = "JiShiQi" style="display:none">计时中</div>
+     <div id="rule1" style="display:none"><span style="font-size: 40px;">游戏介绍：</span><br/>
+        <span style="font-size: 30px " style="font-weight: bold">经典模式 </span>游戏的屏幕的格子内有黑白两种颜色的方块，玩家需要按照顺序点击屏幕最下方的黑色方块。点击一个黑色方块，该行方块消失，上方新补充一行方块。该其间不能漏掉一个黑色方块，也不能点击白色方块，否则游戏结束。规定时间内点击的黑色方块个数越多，分数越高。<br/>
+        <span style="font-size: 30px " style="font-weight: bold">街机模式 </span>游戏的屏幕的格子内有黑白两种颜色的方块，方块以一定速度下落。玩家需要按照顺序点击屏幕最下方的黑色方块，该其间不能漏掉一个黑色方块，也不能点击白色方块，黑色方块不能触底，否则游戏结束。
+        </div>   
+</body>
+</html>
+<script>
+    click();
+    function click(){
+        var _play1 = document.getElementById('play1');
+        var _play2 = document.getElementById('play2');
+        var _rule = document.getElementById('rule');
+        var _rule1 = document.getElementById('rule1');
+        var _return = document.getElementById('return');
+        _play1.addEventListener('click',function(){
+            _play1.style.display = 'none';
+            _play2.style.display = 'none';
+            _rule.style.display = 'none';
+            JingDianPlay();
+        })
+        _play2.addEventListener('click',function(){
+            _play2.style.display = 'none';
+            _play1.style.display = 'none';
+            _rule.style.display = 'none';
+            JieJiPlay();
+        })
+        _rule.addEventListener('click',function(){
+            _play2.style.display = 'none';
+            _play1.style.display = 'none';
+            _rule.style.display = 'none';
+            _rule1.style.display="block";
+            _return.style.display="block";
+        })
+        _return.addEventListener('click',function(){
+            _play2.style.display = 'block';
+            _play1.style.display = 'block';
+            _rule.style.display = 'block';
+            _rule1.style.display="none";
+            _return.style.display="none";
+        })
+    }
+ function JingDianPlay(){
+    var _box = document.getElementById('_box');
+    var _gamezone = document.getElementById('_gamezone');
+    var _Jishiqi = document.getElementById('JiShiQi');
+   _Jishiqi.style.display ='block';
+    var timer = null;
+    var score = 0;
+    var flag = true;
+   var timer1 = null;
+   var i= 10 ;
+    timer1 = setInterval(function(){
+    if (i>0){
+    document.getElementById("JiShiQi").innerHTML=i;
+     i --;}
+    else
+{
+clearInterval(timer1);
+alert('游戏结束! '+'得分是：'+score);
+flag = false;
+}
+},1000)
+
+        create();
+        create();
+        create();
+        create();
+        create();
+        _gamezone.addEventListener('click',function(event){
+            var target = event.target;
+            if(target.className == 'odiv i' && flag == true)
+            {   
+                clearInterval(timer);
+                timer = setInterval(function(){
+            _box.style.top = _box.offsetTop + 30 + 'px';
+            if(_box.offsetTop >= 0)
+            {    
+ 	clearInterval(timer);
+                create();
+                _box.style.top = -130 + 'px';
+             } 
+ 	},30) ;
+                target.style.backgroundColor = "#ccc";
+                target.className = 'odiv';
+                score ++;
+            }
+            else{
+                clearInterval(timer);
+                flag = false;
+                alert('游戏结束! '+'得分是：'+ score);
+            }
+        })
+}
+function JieJiPlay(){
+    var _box = document.getElementById('_box');
+    var _gamezone = document.getElementById('_gamezone');
+    var timer = null;
+    var score = 0;
+    var speed = 5;
+    var flag = true;
+    _box.style.display ='block';
+    timer = setInterval(function(){
+            _box.style.top = _box.offsetTop + speed + 'px';
+            if(_box.offsetTop >= 0)
+            {
+                create();
+                _box.style.top = -130 + 'px';
+            }
+
+            if(_box.children.length == 6)
+            {
+                for(var i = 0;i < 4;i++)
+                 {
+                    if(_box.lastChild.children[i].className == "odiv i")
+                     {
+                        clearInterval(timer);
+                        flag = false;
+                        alert('游戏结束'+'得分是：'+ score);                       
+                    }       
+                 }               
+                _box.removeChild(_box.children[_box.children.length -1]);
+            } 
+        },30) 
+        _gamezone.addEventListener('click',function(event){
+            var target = event.target;
+            if(target.className == 'odiv i' && flag == true)
+            {
+                target.style.backgroundColor = "#ccc";
+                target.className = 'odiv';
+                score ++;
+            }
+            else{
+                clearInterval(timer);
+                flag = false;
+                alert('游戏结束! '+'得分是：'+ score);
+            }
+            if(score % 10 == 0)
+            {
+                speed += 2;
+            }
+        })
+}
+
+    function create(){
+        var rdiv = document.createElement('div');
+        var random = Math.floor(Math.random()*4);
+        rdiv.setAttribute('class','rdiv');
+        for(var i = 0 ; i < 4; i++)
+        {
+            var odiv = document.createElement('div');
+            odiv.setAttribute('class','odiv');
+            rdiv.appendChild(odiv);           
+        }      
+        if(_box.children.length == 0)
+        {
+            _box.appendChild(rdiv);
+        }
+        else{
+            _box.insertBefore(rdiv,_box.children[0]);
+        }
+        var clickBox = _box.children[0].children[random];
+        clickBox.className = 'odiv i';
+        clickBox.style.backgroundColor = '#000';
+    }
+</script>
